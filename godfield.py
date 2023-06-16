@@ -55,7 +55,7 @@ for t in threads:
 print('トークンの作成が完了しました。')
 print(' ')
 print('メニュー')
-print('1: 公衆乱闘\n\n2: 隠れ乱闘\n\n3: 部屋作成')
+print('1: 公衆乱闘\n\n2: 隠れ乱闘\n\n3: 部屋作成\n\n4: ぴょこぴょこ')
 input_data2 = str(input("select: "))
 if input_data2 =="1":
     print('乱闘ねおおけー')
@@ -381,3 +381,126 @@ if input_data2 =="3":
             print(response)
             print(response.text)
     print('おわり')
+
+
+if input_data2 =="4":
+    print('隠れ乱闘ねおけええー')
+    heyaaikotoba = input('部屋の合言葉を入力してね～')
+    message = input('メッセージを入力してください')
+    print('ルームidを特定します')
+    session = requests.Session()
+    headers = {
+        'authority': 'asia-northeast1-godfield.cloudfunctions.net',
+        'accept': '*/*',
+        'accept-language': 'ja-JP,ja;q=0.9',
+        'authorization': f'Bearer {tokens[0]}',
+        'content-type': 'application/json',
+        'origin': 'https://godfield.net',
+        'referer': 'https://godfield.net/',
+        'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'cross-site',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+    }
+    json_data = {
+        'mode': 'hidden',
+        'password': heyaaikotoba,
+        'userName': accname,
+    }
+
+    response = requests.post('https://asia-northeast1-godfield.cloudfunctions.net/createRoom', headers=headers, json=json_data)
+    roomid = response.json()['roomId']
+    print(f'特定が完了しました。id:{roomid}')
+    print('Join...')
+    count2 = 0
+    for token in tokens:
+        headers = {
+            'authority': 'asia-northeast1-godfield.cloudfunctions.net',
+            'accept': '*/*',
+            'accept-language': 'ja-JP,ja;q=0.9',
+            'authorization': f'Bearer {token}',
+            'content-type': 'application/json',
+            'origin': 'https://godfield.net',
+            'referer': 'https://godfield.net/',
+            'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'cross-site',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+        }
+        json_data = {
+            'mode': 'hidden',
+            'roomId': f'{roomid}',
+            'userName': f'{accname}{count2}',
+        }
+        response = session.post('https://asia-northeast1-godfield.cloudfunctions.net/addRoomUser', headers=headers, json=json_data)
+
+        if response.status_code==200:
+            print('join完了！')
+            count2 += 1
+        else:
+            print('ルームが満員か、失敗')
+            print(response)
+            print(response.text)
+    print('Spamします')
+    count3 = 0
+    while True:
+        for token in tokens:
+            headers = {
+                'authority': 'asia-northeast1-godfield.cloudfunctions.net',
+                'accept': '*/*',
+                'accept-language': 'ja-JP,ja;q=0.9',
+                'authorization': f'Bearer {token}',
+                'content-type': 'application/json',
+                'origin': 'https://godfield.net',
+                'referer': 'https://godfield.net/',
+                'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'empty',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-site': 'cross-site',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            }
+            json_data = {
+                'mode': 'hidden',
+                'roomId': f'{roomid}',
+            }
+            response = requests.post('https://asia-northeast1-godfield.cloudfunctions.net/removeRoomUser', headers=headers, json=json_data)
+            print('ぬけた')
+            count3 += 1
+        for token in tokens:
+            headers = {
+                'authority': 'asia-northeast1-godfield.cloudfunctions.net',
+                'accept': '*/*',
+                'accept-language': 'ja-JP,ja;q=0.9',
+                'authorization': f'Bearer {token}',
+                'content-type': 'application/json',
+                'origin': 'https://godfield.net',
+                'referer': 'https://godfield.net/',
+                'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'empty',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-site': 'cross-site',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            }
+            json_data = {
+                'mode': 'hidden',
+                'roomId': f'{roomid}',
+                'userName': f'{accname}{count2}',
+            }
+            response = session.post('https://asia-northeast1-godfield.cloudfunctions.net/addRoomUser', headers=headers, json=json_data)
+            if response.status_code==200:
+                print('はいった')
+                count2 += 1
+            else:
+                print('ルームが満員か、失敗')
+                print(response)
+                print(response.text)
