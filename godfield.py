@@ -386,7 +386,6 @@ if input_data2 =="3":
 if input_data2 =="4":
     print('隠れ乱闘ねおけええー')
     heyaaikotoba = input('部屋の合言葉を入力してね～')
-    message = input('メッセージを入力してください')
     print('ルームidを特定します')
     session = requests.Session()
     headers = {
